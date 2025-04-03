@@ -22,18 +22,18 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import net.minecraft.class_10961;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.server.MinecraftServer;
 
 import net.fabricmc.fabric.impl.biome.modification.BiomeModificationImpl;
 
-@Mixin(MinecraftServer.class)
+@Mixin(class_10961.class)
 public abstract class MinecraftServerMixin {
 	@Shadow
-	public abstract DynamicRegistryManager.Immutable getRegistryManager();
+	public abstract DynamicRegistryManager.Immutable method_69003();
 
 	@Inject(method = "<init>", at = @At(value = "RETURN"))
 	private void finalizeWorldGen(CallbackInfo ci) {
-		BiomeModificationImpl.INSTANCE.finalizeWorldGen(getRegistryManager());
+		BiomeModificationImpl.INSTANCE.finalizeWorldGen(method_69003());
 	}
 }

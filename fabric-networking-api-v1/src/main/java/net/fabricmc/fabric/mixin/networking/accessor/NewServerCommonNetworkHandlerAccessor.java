@@ -14,12 +14,21 @@
  * limitations under the License.
  */
 
-package net.fabricmc.fabric.mixin.client.rendering;
+package net.fabricmc.fabric.mixin.networking.accessor;
 
+import com.mojang.authlib.GameProfile;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-import net.minecraft.client.render.DimensionEffects;
+import net.minecraft.class_10972;
+import net.minecraft.network.ClientConnection;
 
-@Mixin(DimensionEffects.class)
-public interface DimensionEffectsAccessor {
+@Mixin(class_10972.class)
+public interface NewServerCommonNetworkHandlerAccessor {
+	@Accessor
+	ClientConnection getField_58317();
+
+	@Invoker("getProfile")
+	GameProfile invokeGetProfile();
 }
