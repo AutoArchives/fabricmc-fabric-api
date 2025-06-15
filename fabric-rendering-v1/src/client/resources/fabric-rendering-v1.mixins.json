@@ -5,6 +5,7 @@
   "client": [
     "ArmorFeatureRendererMixin",
     "AtlasSourceManagerAccessor",
+    "BipedEntityRendererMixin",
     "BlockColorsMixin",
     "BlockEntityRendererFactoriesMixin",
     "CapeFeatureRendererMixin",
@@ -18,6 +19,7 @@
     "LayeredDrawerAccessor",
     "LayeredDrawerMixin",
     "LivingEntityRendererAccessor",
+    "LivingEntityRendererMixin",
     "SpecialModelTypesMixin",
     "TooltipComponentMixin",
     "WorldRendererMixin"
