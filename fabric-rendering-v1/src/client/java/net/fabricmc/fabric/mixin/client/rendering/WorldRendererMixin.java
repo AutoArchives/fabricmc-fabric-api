@@ -50,11 +50,13 @@ import net.minecraft.util.math.Vec3d;
 
 import net.fabricmc.fabric.api.client.rendering.v1.DimensionRenderingRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.InvalidateRenderStateCallback;
+import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderContext;
 import net.fabricmc.fabric.api.client.rendering.v1.WorldRenderEvents;
 import net.fabricmc.fabric.impl.client.rendering.WorldRenderContextImpl;
+import net.fabricmc.fabric.impl.client.rendering.WorldRendererHooks;
 
 @Mixin(WorldRenderer.class)
-public abstract class WorldRendererMixin {
+public abstract class WorldRendererMixin implements WorldRendererHooks {
 	@Final
 	@Shadow
 	private BufferBuilderStorage bufferBuilders;
@@ -66,10 +68,12 @@ public abstract class WorldRendererMixin {
 	@Final
 	private DefaultFramebufferSet framebufferSet;
 	@Unique private final WorldRenderContextImpl context = new WorldRenderContextImpl();
+	@Unique private boolean isRendering = false;
 
 	@Inject(method = "render", at = @At("HEAD"))
 	private void beforeRender(ObjectAllocator objectAllocator, RenderTickCounter tickCounter, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, Matrix4f positionMatrix, Matrix4f projectionMatrix, CallbackInfo ci) {
 		context.prepare((WorldRenderer) (Object) this, tickCounter, renderBlockOutline, camera, gameRenderer, positionMatrix, projectionMatrix, bufferBuilders.getEntityVertexConsumers(), MinecraftClient.isFabulousGraphicsOrBetter(), world);
+		isRendering = true;
 		WorldRenderEvents.START.invoker().onStart(context);
 	}
 
@@ -167,6 +171,7 @@ public abstract class WorldRendererMixin {
 	@Inject(method = "render", at = @At("RETURN"))
 	private void afterRender(CallbackInfo ci) {
 		WorldRenderEvents.END.invoker().onEnd(context);
+		isRendering = false;
 	}
 
 	@Inject(method = "Lnet/minecraft/client/render/WorldRenderer;reload()V", at = @At("HEAD"))
@@ -208,5 +213,14 @@ public abstract class WorldRendererMixin {
 				info.cancel();
 			}
 		}
+	}
+
+	@Override
+	public WorldRenderContext fabric$getWorldRenderContext() {
+		if (!isRendering) {
+			throw new IllegalStateException("WorldRenderer is not rendering");
+		}
+
+		return context;
 	}
 }
