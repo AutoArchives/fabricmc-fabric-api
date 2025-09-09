@@ -43,6 +43,11 @@ public class BannerGuiElementRenderer extends SpecialGuiElementRenderer<BannerGu
 
 	@Override
 	protected void render(BannerGuiElementRenderState state, MatrixStack matrices) {
+		if (true) {
+			// TODO 1.21.9 - Disable as it breaks everything, pls help
+			return;
+		}
+
 		client.gameRenderer.getDiffuseLighting().setShaderLights(DiffuseLighting.Type.ITEMS_FLAT);
 		BannerBlockEntityRenderer.renderCanvas(
 				client.getAtlasManager(),
