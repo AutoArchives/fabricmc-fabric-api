@@ -26,6 +26,7 @@ import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.gui.screen.ingame.CreativeInventoryScreen;
+import net.minecraft.client.gui.screen.ingame.GrindstoneScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.ClickableWidget;
 import net.minecraft.text.Text;
@@ -77,12 +78,6 @@ public final class ScreenTests implements ClientModInitializer {
 					.findAny()
 					.orElseThrow(() -> new AssertionError("Failed to find the \"Stop Sound\" button in the screen's elements"));
 
-			// Register render event to draw an icon on the screen
-			ScreenEvents.afterRender(screen).register((_screen, drawContext, mouseX, mouseY, tickDelta) -> {
-				// Render an armor icon to test
-				drawContext.drawGuiTexture(RenderPipelines.GUI_TEXTURED, ScreenTests.ARMOR_FULL_TEXTURE, (screen.width / 2) - 124, (screen.height / 4) + 96, 20, 20);
-			});
-
 			ScreenKeyboardEvents.allowKeyPress(screen).register((_screen, key, scancode, modifiers) -> {
 				LOGGER.info("After Pressed, Code: {}, Scancode: {}, Modifiers: {}", key, scancode, modifiers);
 				return true; // Let actions continue
@@ -93,6 +88,27 @@ public final class ScreenTests implements ClientModInitializer {
 			});
 		} else if (screen instanceof CreativeInventoryScreen) {
 			Screens.getButtons(screen).add(new TestButtonWidget());
+		} else if (screen instanceof GrindstoneScreen) {
+			// Register render event to draw an icon on the screen
+			// Expected result: the icon is drawn BEHIND both the handled screen interface and the darkened background, text, items, the carried item, tooltips, etc.
+			ScreenEvents.beforeRender(screen).register((_screen, drawContext, mouseX, mouseY, tickDelta) -> {
+				// Render an armor icon to test
+				drawContext.drawGuiTexture(RenderPipelines.GUI_TEXTURED, ScreenTests.ARMOR_FULL_TEXTURE, (screen.width / 2) - 88 - 10, (screen.height / 2) - 34, 20, 20);
+			});
+
+			// Register render event to draw an icon on the screen
+			// Expected result: the icon is drawn ABOVE both the handled screen interface and the darkened background, but still BEHIND text, items, the carried item, tooltips, etc.
+			ScreenEvents.afterBackground(screen).register((_screen, drawContext, mouseX, mouseY, tickDelta) -> {
+				// Render an armor icon to test
+				drawContext.drawGuiTexture(RenderPipelines.GUI_TEXTURED, ScreenTests.ARMOR_FULL_TEXTURE, (screen.width / 2) - 88 - 10, (screen.height / 2) - 10, 20, 20);
+			});
+
+			// Register render event to draw an icon on the screen
+			// Expected result: the icon is drawn ABOVE everything, including the background, handled screen interface, text, items, the carried item, tooltips, etc.
+			ScreenEvents.afterRender(screen).register((_screen, drawContext, mouseX, mouseY, tickDelta) -> {
+				// Render an armor icon to test
+				drawContext.drawGuiTexture(RenderPipelines.GUI_TEXTURED, ScreenTests.ARMOR_FULL_TEXTURE, (screen.width / 2) - 88 - 10, (screen.height / 2) + 14, 20, 20);
+			});
 		}
 	}
 
