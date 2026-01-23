@@ -271,7 +271,7 @@ public class CommonAttachmentTests {
 	}
 
 	@Test
-	void applyToInvalidTarget() {
+	void applyToInvalidTarget() throws AttachmentSyncException {
 		DynamicRegistryManager drm = mockDRM();
 
 		ServerWorld world = mock(ServerWorld.class);
@@ -286,7 +286,7 @@ public class CommonAttachmentTests {
 				new byte[]{0}
 		);
 
-		assertThrows(AttachmentSyncException.class, () -> attachmentChange.tryApply(world));
+		attachmentChange.tryApply(world);
 	}
 
 	/*

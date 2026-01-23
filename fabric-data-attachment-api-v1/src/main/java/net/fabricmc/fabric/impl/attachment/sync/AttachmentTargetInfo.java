@@ -33,6 +33,7 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.Chunk;
+import net.minecraft.world.chunk.ChunkStatus;
 
 import net.fabricmc.fabric.api.attachment.v1.AttachmentTarget;
 
@@ -147,7 +148,7 @@ public sealed interface AttachmentTargetInfo<T> {
 
 		@Override
 		public AttachmentTarget getTarget(World world) {
-			return world.getChunk(pos.x, pos.z);
+			return world.getChunk(pos.x, pos.z, ChunkStatus.FULL, false);
 		}
 
 		@Override
