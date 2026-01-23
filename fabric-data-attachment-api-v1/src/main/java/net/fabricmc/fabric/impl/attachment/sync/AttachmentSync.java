@@ -51,6 +51,10 @@ public class AttachmentSync implements ModInitializer {
 	}
 
 	public static void trySync(AttachmentSyncPayloadS2C payload, ServerPlayerEntity player) {
+		if (player.networkHandler == null) {
+			return;
+		}
+
 		if (!payload.attachments().isEmpty()) {
 			ServerPlayNetworking.send(player, payload);
 		}
