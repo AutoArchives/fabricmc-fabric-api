@@ -116,7 +116,7 @@ public interface PlayerInventoryStorage extends ContainerStorage {
 	 * @param throwRandomly If true, the variant will be thrown in a random direction from the entity regardless of which direction the entity is facing.
 	 * @param retainOwnership If true, set the {@code Thrower} NBT data to the player's UUID.
 	 * @param transaction The transaction this operation is part of.
-	 * @see Player#drop(ItemStack, boolean, boolean)
+	 * @see Player#drop(ItemStack, boolean)
 	 */
 	void drop(ItemVariant variant, long amount, boolean throwRandomly, boolean retainOwnership, TransactionContext transaction);
 
@@ -129,7 +129,7 @@ public interface PlayerInventoryStorage extends ContainerStorage {
 	 * @param amount How many of the variant to drop.
 	 * @param retainOwnership If true, set the {@code Thrower} NBT data to the player's UUID.
 	 * @param transaction The transaction this operation is part of.
-	 * @see Player#drop(ItemStack, boolean, boolean)
+	 * @see Player#drop(ItemStack, boolean)
 	 */
 	default void drop(ItemVariant variant, long amount, boolean retainOwnership, TransactionContext transaction) {
 		drop(variant, amount, false, retainOwnership, transaction);
@@ -143,7 +143,7 @@ public interface PlayerInventoryStorage extends ContainerStorage {
 	 * @param variant The variant to drop.
 	 * @param amount How many of the variant to drop.
 	 * @param transaction The transaction this operation is part of.
-	 * @see Player#drop(ItemStack, boolean, boolean)
+	 * @see Player#drop(ItemStack, boolean)
 	 */
 	default void drop(ItemVariant variant, long amount, TransactionContext transaction) {
 		drop(variant, amount, false, transaction);

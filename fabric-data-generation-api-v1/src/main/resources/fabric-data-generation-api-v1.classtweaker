@@ -138,12 +138,8 @@ transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	generateC
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	generateStonecutterRecipe	(Lnet/minecraft/data/BlockFamily;Lnet/minecraft/data/BlockFamily$Variant;Lnet/minecraft/world/level/block/Block;)V
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	getBaseBlockForCrafting	(Lnet/minecraft/data/BlockFamily;Lnet/minecraft/data/BlockFamily$Variant;)Lnet/minecraft/world/level/block/Block;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	insideOf	(Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/advancements/Criterion;
-transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	bredAnimal	()Lnet/minecraft/advancements/Criterion;
-transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	has	(Lnet/minecraft/advancements/criterion/MinMaxBounds$Ints;Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	has	(Lnet/minecraft/world/level/ItemLike;)Lnet/minecraft/advancements/Criterion;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	has	(Lnet/minecraft/tags/TagKey;)Lnet/minecraft/advancements/Criterion;
-transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	inventoryTrigger	([Lnet/minecraft/advancements/criterion/ItemPredicate$Builder;)Lnet/minecraft/advancements/Criterion;
-transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	inventoryTrigger	([Lnet/minecraft/advancements/criterion/ItemPredicate;)Lnet/minecraft/advancements/Criterion;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	getHasName	(Lnet/minecraft/world/level/ItemLike;)Ljava/lang/String;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	getItemName	(Lnet/minecraft/world/level/ItemLike;)Ljava/lang/String;
 transitive-accessible	method	net/minecraft/data/recipes/RecipeProvider	getSimpleRecipeName	(Lnet/minecraft/world/level/ItemLike;)Ljava/lang/String;
@@ -209,6 +205,7 @@ transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerato
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createPressurePlate	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createSlab	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;Lnet/minecraft/client/data/models/MultiVariant;)Lnet/minecraft/client/data/models/blockstates/BlockModelDefinitionGenerator;
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createTrivialCube	(Lnet/minecraft/world/level/block/Block;)V
+transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createTrivialCubeCopyingTexture	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/world/level/block/Block;)V
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createTrivialBlock	(Lnet/minecraft/world/level/block/Block;Lnet/minecraft/client/data/models/model/TexturedModel$Provider;)V
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	createItemWithGrassTint	(Lnet/minecraft/world/level/block/Block;)V
 transitive-accessible	method	net/minecraft/client/data/models/BlockModelGenerators	family	(Lnet/minecraft/world/level/block/Block;)Lnet/minecraft/client/data/models/BlockModelGenerators$BlockFamilyProvider;
@@ -401,6 +398,7 @@ transitive-accessible	method	net/minecraft/client/data/models/ItemModelGenerator
 transitive-accessible	method	net/minecraft/client/data/models/ItemModelGenerators	generateTippedArrow	(Lnet/minecraft/world/item/Item;)V
 transitive-accessible	method	net/minecraft/client/data/models/ItemModelGenerators	generateDyedItem	(Lnet/minecraft/world/item/Item;I)V
 transitive-accessible	method	net/minecraft/client/data/models/ItemModelGenerators	generateTwoLayerDyedItem	(Lnet/minecraft/world/item/Item;)V
+transitive-accessible	method	net/minecraft/client/data/models/ItemModelGenerators	generateGroupAction	()V
 transitive-extendable	method	net/minecraft/client/data/models/ModelProvider	getName	()Ljava/lang/String;
 transitive-extendable	method	net/minecraft/data/advancements/AdvancementProvider	getName	()Ljava/lang/String;
 transitive-extendable	method	net/minecraft/data/info/BiomeParametersDumpReport	getName	()Ljava/lang/String;

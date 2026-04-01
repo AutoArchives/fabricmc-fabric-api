@@ -91,7 +91,7 @@ abstract class BlockFeatureRendererMixin {
 	private boolean hasMaterialFlagProxy(BlockStateModel model, @BakedQuad.MaterialFlags int flag, @Local(name = "movingBlockRenderState") MovingBlockRenderState movingBlockRenderState, @Local(name = "blockState") BlockState blockState) {
 		long blockSeed = blockState.getSeed(movingBlockRenderState.randomSeedPos);
 		random.setSeed(blockSeed);
-		return model.hasMaterialFlag(movingBlockRenderState, movingBlockRenderState.blockPos, blockState, random, flag);
+		return model.hasMaterialFlag(movingBlockRenderState, new BlockPos((int) movingBlockRenderState.pos.x, (int) movingBlockRenderState.pos.y, (int) movingBlockRenderState.pos.z), blockState, random, flag);
 	}
 
 	@Redirect(method = "renderMovingBlockSubmits", at = @At(value = "INVOKE", target = "net/minecraft/client/renderer/block/ModelBlockRenderer.tesselateBlock(Lnet/minecraft/client/renderer/block/BlockQuadOutput;FFFLnet/minecraft/client/renderer/block/BlockAndTintGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/level/block/state/BlockState;Lnet/minecraft/client/renderer/block/dispatch/BlockStateModel;J)V"))

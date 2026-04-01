@@ -32,6 +32,7 @@ import net.minecraft.client.renderer.state.level.CameraRenderState;
 import net.minecraft.world.entity.animal.pig.Pig;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.phys.Vec3;
 
 import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
 import net.fabricmc.fabric.api.client.rendering.v1.RenderStateDataKey;
@@ -52,7 +53,7 @@ public class PigRendererMixin {
 			MovingBlockRenderState movingBlockRenderState = new MovingBlockRenderState();
 			ClientLevel clientLevel = (ClientLevel) entity.level();
 			movingBlockRenderState.randomSeedPos = entity.getOnPos();
-			movingBlockRenderState.blockPos = entity.blockPosition();
+			movingBlockRenderState.pos = new Vec3(entity.blockPosition());
 			movingBlockRenderState.blockState = entity.getBlockStateOn();
 			movingBlockRenderState.biome = entity.level().getBiome(entity.blockPosition());
 			movingBlockRenderState.cardinalLighting = clientLevel.cardinalLighting();

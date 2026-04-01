@@ -46,6 +46,7 @@ import net.minecraft.client.renderer.state.level.WorldBorderRenderState;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.Bootstrap;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.Shapes;
 
 import net.fabricmc.fabric.api.client.rendering.v1.FabricRenderState;
@@ -80,7 +81,7 @@ public class RenderStateDataTest {
 				new WindowRenderState(),
 				new GuiRenderState(),
 				new PanoramaRenderState(0f),
-				new BlockBreakingRenderState(BlockPos.ZERO, Blocks.AIR.defaultBlockState(), 0),
+				new BlockBreakingRenderState(Vec3.ZERO, Blocks.AIR.defaultBlockState(), 0),
 				new BlockOutlineRenderState(BlockPos.ZERO, false, false, Shapes.empty()),
 				new CameraEntityRenderState(),
 				new CameraRenderState(),

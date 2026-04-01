@@ -133,7 +133,7 @@ class PlayerInventoryStorageImpl extends ContainerStorageImpl implements PlayerI
 
 				while (remainder > 0) {
 					int dropped = (int) Math.min(ItemVariantImpl.getMaxStackSize(entry.key), remainder);
-					inventory.player.drop(entry.key.toStack(dropped), entry.throwRandomly, entry.retainOwnership);
+					inventory.player.drop(entry.key.toStack(dropped), entry.retainOwnership);
 					remainder -= dropped;
 				}
 			}
