@@ -73,7 +73,7 @@ public final class NetworkingImpl {
 			}
 
 			int n = buf.readVarInt();
-			List<Identifier> ids = new ArrayList<>(n);
+			List<Identifier> ids = new ArrayList<>(Math.min(n, 65536));
 
 			for (int i = 0; i < n; i++) {
 				ids.add(buf.readIdentifier());
