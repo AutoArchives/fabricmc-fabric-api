@@ -10,6 +10,7 @@
     "CustomPayloadPacketCodecMixin",
     "ClientboundCustomPayloadPacketMixin",
     "DebugConfigCommandMixin",
+    "FriendlyByteBufMixin",
     "PacketEncoderMixin",
     "ServerEntityMixin",
     "ClientboundCustomQueryPacketMixin",
