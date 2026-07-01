@@ -38,88 +38,110 @@ public final class ButtonList extends AbstractList<ClickableWidget> {
 
 	@Override
 	public ClickableWidget get(int index) {
-		final int drawableIndex = translateIndex(drawables, index, false);
-		return (ClickableWidget) drawables.get(drawableIndex);
-	}
-
-	@Override
-	public ClickableWidget set(int index, ClickableWidget element) {
-		final int drawableIndex = translateIndex(drawables, index, false);
-		drawables.set(drawableIndex, element);
-
-		final int selectableIndex = translateIndex(selectables, index, false);
-		selectables.set(selectableIndex, element);
-
-		final int childIndex = translateIndex(children, index, false);
-		return (ClickableWidget) children.set(childIndex, element);
-	}
-
-	@Override
-	public void add(int index, ClickableWidget element) {
-		// ensure no duplicates
-		final int duplicateIndex = drawables.indexOf(element);
-
-		if (duplicateIndex >= 0) {
-			drawables.remove(element);
-			selectables.remove(element);
-			children.remove(element);
-
-			if (duplicateIndex <= translateIndex(drawables, index, true)) {
-				index--;
-			}
-		}
-
-		final int drawableIndex = translateIndex(drawables, index, true);
-		drawables.add(drawableIndex, element);
-
-		final int selectableIndex = translateIndex(selectables, index, true);
-		selectables.add(selectableIndex, element);
-
-		final int childIndex = translateIndex(children, index, true);
-		children.add(childIndex, element);
-	}
-
-	@Override
-	public ClickableWidget remove(int index) {
-		index = translateIndex(drawables, index, false);
-
-		final ClickableWidget removedButton = (ClickableWidget) drawables.remove(index);
-		this.selectables.remove(removedButton);
-		this.children.remove(removedButton);
-
-		return removedButton;
-	}
-
-	@Override
-	public int size() {
-		int ret = 0;
-
-		for (Drawable drawable : drawables) {
-			if (drawable instanceof ClickableWidget) {
-				ret++;
-			}
-		}
-
-		return ret;
-	}
-
-	private int translateIndex(List<?> list, int index, boolean allowAfter) {
 		int remaining = index;
 
-		for (int i = 0, max = list.size(); i < max; i++) {
-			if (list.get(i) instanceof ClickableWidget) {
+		for (Drawable renderable : drawables) {
+			if (renderable instanceof ClickableWidget widget) {
 				if (remaining == 0) {
-					return i;
+					return widget;
 				}
 
 				remaining--;
 			}
 		}
 
-		if (allowAfter && remaining == 0) {
-			return list.size();
+		throw new IndexOutOfBoundsException(String.format("Index: %d, Size: %d", index, size()));
+	}
+
+	@Override
+	public ClickableWidget set(int index, ClickableWidget element) {
+		ClickableWidget existing = get(index);
+
+		int i = drawables.indexOf(existing);
+		if (i >= 0) drawables.set(i, element);
+
+		i = selectables.indexOf(existing);
+		if (i >= 0) selectables.set(i, element);
+
+		i = children.indexOf(existing);
+		if (i >= 0) children.set(i, element);
+
+		return existing;
+	}
+
+	@Override
+	public void add(int index, ClickableWidget element) {
+		// Remove any existing occurrence and adjust the target index accordingly.
+		int duplicateIndex = listIndexOf(element);
+
+		if (duplicateIndex >= 0) {
+			drawables.remove(element);
+			selectables.remove(element);
+			children.remove(element);
+
+			if (duplicateIndex < index) {
+				index--;
+			}
 		}
 
-		throw new IndexOutOfBoundsException(String.format("Index: %d, Size: %d", index, index - remaining));
+		if (index > size()) {
+			throw new IndexOutOfBoundsException(String.format("Index: %d, Size: %d", index, size()));
+		} else if (index == size()) {
+			drawables.add(element);
+			selectables.add(element);
+			children.add(element);
+		} else {
+			// Use an anchor widget and insert before it.
+			ClickableWidget anchor = get(index);
+
+			int i = drawables.indexOf(anchor);
+			drawables.add(i >= 0 ? i : drawables.size(), element);
+
+			i = selectables.indexOf(anchor);
+			selectables.add(i >= 0 ? i : selectables.size(), element);
+
+			i = children.indexOf(anchor);
+			children.add(i >= 0 ? i : children.size(), element);
+		}
+	}
+
+	private int listIndexOf(ClickableWidget element) {
+		int index = 0;
+
+		for (Drawable renderable : drawables) {
+			if (renderable instanceof ClickableWidget widget) {
+				if (widget == element) {
+					return index;
+				}
+
+				index++;
+			}
+		}
+
+		return -1;
+	}
+
+	@Override
+	public ClickableWidget remove(int index) {
+		ClickableWidget removedButton = get(index);
+
+		drawables.remove(removedButton);
+		selectables.remove(removedButton);
+		children.remove(removedButton);
+
+		return removedButton;
+	}
+
+	@Override
+	public int size() {
+		int size = 0;
+
+		for (Drawable renderable : drawables) {
+			if (renderable instanceof ClickableWidget) {
+				size++;
+			}
+		}
+
+		return size;
 	}
 }
