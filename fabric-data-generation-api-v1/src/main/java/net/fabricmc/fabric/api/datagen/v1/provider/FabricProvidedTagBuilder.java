@@ -16,11 +16,15 @@
 
 package net.fabricmc.fabric.api.datagen.v1.provider;
 
+import java.util.Collection;
+import java.util.stream.Stream;
+
 import net.minecraft.data.tags.TagAppender;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagKey;
 
 /**
- * Interface-injected to {@link net.minecraft.data.tags.TagAppender}.
+ * Interface-injected to {@link TagAppender}.
  */
 @SuppressWarnings("unchecked")
 public interface FabricProvidedTagBuilder<E, T> {
@@ -31,10 +35,61 @@ public interface FabricProvidedTagBuilder<E, T> {
 	 * @return this, for chaining
 	 */
 	default TagAppender<E, T> setReplace(boolean replace) {
-		return (TagAppender<E, T>) this;
+		throw new AssertionError("Implemented via mixin");
 	}
 
+	/**
+	 * Forces a tag key into the tag, bypassing any errors resulting from the
+	 * tag not existing at runtime.
+	 * @param tag The tag to force into the contents of the tag
+	 * @return this, for chaining
+	 */
 	default TagAppender<E, T> forceAddTag(TagKey<T> tag) {
-		return (TagAppender<E, T>) this;
+		throw new AssertionError("Implemented via mixin");
+	}
+
+	/**
+	 * Removes an entry from the tag.
+	 * @param element The entry to remove from the contents of the tag
+	 * @return this, for chaining
+	 */
+	default TagAppender<E, T> remove(ResourceKey<T> element) {
+		throw new AssertionError("Implemented via mixin");
+	}
+
+	/**
+	 * Removes multiple entries from the tag.
+	 * @param elements The entries to remove from the contents of the tag
+	 * @return this, for chaining
+	 */
+	default TagAppender<E, T> remove(final ResourceKey<T>... elements) {
+		throw new AssertionError("Implemented via mixin");
+	}
+
+	/**
+	 * Removes multiple entries from the tag.
+	 * @param elements The entries to remove from the contents of the tag
+	 * @return this, for chaining
+	 */
+	default TagAppender<E, T> removeAll(final Collection<ResourceKey<T>> elements) {
+		throw new AssertionError("Implemented via mixin");
+	}
+
+	/**
+	 * Removes multiple entries from the tag.
+	 * @param elements The entries to remove from the contents of the tag
+	 * @return this, for chaining
+	 */
+	default TagAppender<E, T> removeAll(final Stream<ResourceKey<T>> elements) {
+		throw new AssertionError("Implemented via mixin");
+	}
+
+	/**
+	 * Removes all entries of the specified tag from the tag.
+	 * @param tag The tag to remove from the contents of the tag
+	 * @return this, for chaining
+	 */
+	default TagAppender<E, T> removeTag(TagKey<T> tag) {
+		throw new AssertionError("Implemented via mixin");
 	}
 }

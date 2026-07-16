@@ -27,7 +27,6 @@ import net.minecraft.client.data.models.ItemModelGenerators;
 import net.minecraft.client.renderer.texture.atlas.SpriteSource;
 import net.minecraft.client.renderer.texture.atlas.SpriteSources;
 import net.minecraft.client.renderer.texture.atlas.sources.DirectoryLister;
-import net.minecraft.core.HolderLookup;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.resources.Identifier;
@@ -58,12 +57,12 @@ public class DataGeneratorClientTestEntrypoint implements DataGeneratorEntrypoin
 	}
 
 	private static class TestAtlasSourceProvider extends FabricCodecDataProvider<List<SpriteSource>> {
-		private TestAtlasSourceProvider(FabricDataOutput dataOutput, CompletableFuture<HolderLookup.Provider> registriesFuture) {
+		private TestAtlasSourceProvider(FabricDataOutput dataOutput, CompletableFuture<Provider> registriesFuture) {
 			super(dataOutput, registriesFuture, PackOutput.Target.RESOURCE_PACK, "atlases", SpriteSources.FILE_CODEC);
 		}
 
 		@Override
-		protected void configure(BiConsumer<Identifier, List<SpriteSource>> provider, HolderLookup.Provider lookup) {
+		protected void configure(BiConsumer<Identifier, List<SpriteSource>> provider, Provider lookup) {
 			provider.accept(Identifier.fromNamespaceAndPath(MOD_ID, "atlas_source_test"), List.of(new DirectoryLister("example", "example/")));
 		}
 
@@ -104,7 +103,7 @@ public class DataGeneratorClientTestEntrypoint implements DataGeneratorEntrypoin
 		}
 
 		@Override
-		protected void configure(HolderLookup.Provider registryLookup, SoundExporter exporter) {
+		protected void configure(Provider registryLookup, SoundExporter exporter) {
 			exporter.add(DataGeneratorTestContent.TEST_SOUND, SoundTypeBuilder.of(DataGeneratorTestContent.TEST_SOUND)
 					.sound(SoundTypeBuilder.EntryBuilder.ofFile(Identifier.withDefaultNamespace("mob/parrot/idle"))
 						.volume(0.7F), 1)

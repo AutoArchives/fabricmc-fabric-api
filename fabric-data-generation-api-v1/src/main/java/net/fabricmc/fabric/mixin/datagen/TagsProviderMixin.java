@@ -41,8 +41,9 @@ import net.minecraft.resources.ResourceKey;
 import net.minecraft.tags.TagBuilder;
 
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricTagProvider;
-import net.fabricmc.fabric.impl.datagen.FabricTagBuilder;
 import net.fabricmc.fabric.impl.datagen.TagAliasGenerator;
+import net.fabricmc.fabric.impl.datagen.TagBuilderHooks;
+import net.fabricmc.fabric.impl.tag.TagFileHooks;
 
 @Mixin(TagsProvider.class)
 public class TagsProviderMixin<T> {
@@ -57,13 +58,15 @@ public class TagsProviderMixin<T> {
 		tagAliasPathResolver = output.createPathProvider(PackOutput.Target.DATA_PACK, TagAliasGenerator.getDirectory(registryRef));
 	}
 
-	@ModifyArg(method = "method_27046", at = @At(value = "INVOKE", target = "Lnet/minecraft/tags/TagFile;<init>(Ljava/util/List;Z)V"), index = 1)
-	private boolean addReplaced(boolean replaced, @Local TagBuilder tagBuilder) {
-		if (tagBuilder instanceof FabricTagBuilder fabricTagBuilder) {
-			return fabricTagBuilder.fabric_isReplaced();
-		}
+	@ModifyArg(method = "method_27046", at = @At(value = "INVOKE", target = "Lnet/minecraft/data/DataProvider;saveStable(Lnet/minecraft/data/CachedOutput;Lnet/minecraft/core/HolderLookup$Provider;Lcom/mojang/serialization/Codec;Ljava/lang/Object;Ljava/nio/file/Path;)Ljava/util/concurrent/CompletableFuture;"), index = 3)
+	private T addRemove(T value, @Local TagBuilder builder) {
+		((TagFileHooks) value).fabric_setRemove(((TagBuilderHooks) builder).fabric_getRemove());
+		return value;
+	}
 
-		return replaced;
+	@ModifyArg(method = "method_27046", at = @At(value = "INVOKE", target = "Lnet/minecraft/tags/TagFile;<init>(Ljava/util/List;Z)V"), index = 1)
+	private boolean addReplaced(boolean replaced, @Local TagBuilder builder) {
+		return ((TagBuilderHooks) builder).fabric_isReplaced();
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,8 +83,8 @@ public class TagsProviderMixin<T> {
 			}
 
 			return original.call((Object) newFutures);
-		} else {
-			return original.call((Object) futures);
 		}
+
+		return original.call((Object) futures);
 	}
 }

@@ -27,6 +27,8 @@ import static net.fabricmc.fabric.test.datagen.DataGeneratorTestContent.TEST_DAT
 import static net.fabricmc.fabric.test.datagen.DataGeneratorTestContent.TEST_DYNAMIC_REGISTRY_EXTRA_ITEM_KEY;
 import static net.fabricmc.fabric.test.datagen.DataGeneratorTestContent.TEST_DYNAMIC_REGISTRY_ITEM_KEY;
 import static net.fabricmc.fabric.test.datagen.DataGeneratorTestContent.TEST_SOUND;
+import static net.minecraft.data.advancements.AdvancementSubProvider.createPlaceholder;
+import static net.minecraft.references.Blocks.MELON;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -58,7 +60,6 @@ import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.registries.RegistryPatchGenerator;
 import net.minecraft.data.worldgen.BootstrapContext;
 import net.minecraft.network.chat.Component;
-import net.minecraft.references.Blocks;
 import net.minecraft.resources.Identifier;
 import net.minecraft.resources.RegistryFixedCodec;
 import net.minecraft.resources.ResourceKey;
@@ -72,6 +73,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.biome.Biomes;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootPool;
@@ -317,6 +319,21 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 					.add(BlockTags.FLOWERS, BlockTags.FLOWER_POTS);
 			aliasGroup(Identifier.fromNamespaceAndPath("other_namespace", "flowers"))
 					.add(BlockTags.FLOWERS, BlockTags.FLOWER_POTS);
+
+			builder(BlockTags.AZALEA_ROOT_REPLACEABLE)
+					.remove(Blocks.RED_SAND.builtInRegistryHolder().key())
+					.removeTag(BlockTags.DIRT);
+
+			builder(BlockTags.NEEDS_DIAMOND_TOOL)
+					.remove(
+							Blocks.ANCIENT_DEBRIS.builtInRegistryHolder().key(),
+							Blocks.NETHERITE_BLOCK.builtInRegistryHolder().key(),
+							Blocks.OBSIDIAN.builtInRegistryHolder().key()
+					);
+			builder(BlockTags.CLIMBABLE)
+					.add(Blocks.BLUE_GLAZED_TERRACOTTA.builtInRegistryHolder().key())
+					.add(Blocks.BROWN_GLAZED_TERRACOTTA.builtInRegistryHolder().key())
+					.remove(Blocks.BLUE_GLAZED_TERRACOTTA.builtInRegistryHolder().key());
 		}
 	}
 
@@ -384,6 +401,18 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 							false, false, false)
 					.addCriterion("killed_something", KilledTrigger.TriggerInstance.playerKilledEntity())
 					.save(withConditions(consumer, NEVER_LOADED), MOD_ID + ":test/root_not_loaded");
+
+			AdvancementHolder adventureChild = Advancement.Builder.advancement()
+					.display(SIMPLE_BLOCK,
+							Component.translatable("advancements.test.adventure_child.title"),
+							Component.translatable("advancements.test.adventure_child.description"),
+							Identifier.withDefaultNamespace("textures/gui/advancements/backgrounds/end.png"),
+							AdvancementType.GOAL,
+							false, false, false
+					)
+					.addCriterion("killed_something", KilledTrigger.TriggerInstance.playerKilledEntity())
+					.parent(createPlaceholder("minecraft:adventure/root"))
+					.save(consumer, MOD_ID + ":test/adventure_child");
 		}
 	}
 
@@ -487,7 +516,7 @@ public class DataGeneratorTestEntrypoint implements DataGeneratorEntrypoint {
 		protected void configure(BiConsumer<Identifier, LootItemCondition> provider, HolderLookup.Provider lookup) {
 			HolderGetter<Block> blocks = lookup.lookupOrThrow(Registries.BLOCK);
 			provider.accept(Identifier.fromNamespaceAndPath(MOD_ID, "predicate_test"), LootItemBlockStatePropertyCondition.hasBlockStateProperties(
-					blocks.getOrThrow(Blocks.MELON).value()).build()); // Pretend this actually does something and we cannot access the blocks directly
+					blocks.getOrThrow(MELON).value()).build()); // Pretend this actually does something and we cannot access the blocks directly
 		}
 
 		@Override
