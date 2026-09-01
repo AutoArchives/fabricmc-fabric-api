@@ -17,8 +17,6 @@
     "HeadFeatureRendererMixin",
     "InGameHudMixin",
     "ItemColorsMixin",
-    "LayeredDrawerAccessor",
-    "LayeredDrawerMixin",
     "LivingEntityRendererAccessor",
     "TooltipComponentMixin",
     "WorldRendererMixin",
